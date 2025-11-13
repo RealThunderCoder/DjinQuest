@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class ObjectSpawning : MonoBehaviour
+public class IceSpawner : MonoBehaviour
 {
+    public static IceSpawner Instance { get; private set; }
+
     [Header("Hand Reference")]
     [SerializeField] private OVRHand rightHand;
 
@@ -10,12 +12,37 @@ public class ObjectSpawning : MonoBehaviour
     private enum IceType { Vertical };
     [SerializeField] private IceType _currentType = IceType.Vertical;
     [SerializeField] private GameObject[] _iceBlockPrefabs;
+    [SerializeField] private int _spawnLimit = 1;
+    private int _spawnCount;
 
     [Header("Preview References")]
     [SerializeField] private Material _previewMaterial;
+    private Material _previewMatInstance;
     private bool _isPreviewing = false;
     private IceType _currentPreview;
     private GameObject _previewGO;
+
+    private void Start()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            this.enabled = false;
+        }
+
+        _previewMatInstance = new Material(_previewMaterial);
+    }
+
+    private void Update()
+    {
+        if (_previewGO)
+        {
+            // TODO: move preview where player's pointing to
+        }
+    }
 
     private void SpawnIce(IceType type)
     {
@@ -34,6 +61,7 @@ public class ObjectSpawning : MonoBehaviour
         if (type != _currentPreview || _previewGO == null)
         {
             _currentPreview = type;
+            _previewMatInstance.color = CanPlace()? Color.green : Color.red;
             switch (type)
             {
                 case IceType.Vertical:
@@ -46,7 +74,7 @@ public class ObjectSpawning : MonoBehaviour
                 var mats = render.materials;
                 for (int i = 0; i < mats.Length; i++)
                 {
-                    mats[i] = _previewMaterial;
+                    mats[i] = _previewMatInstance;
                 }
                 render.materials = mats;
             }
@@ -54,10 +82,6 @@ public class ObjectSpawning : MonoBehaviour
             {
                 if (col) col.enabled = false;
             }
-        }
-        else
-        {
-            // TODO: move preview where player's pointing to
         }
     }
 
@@ -79,6 +103,19 @@ public class ObjectSpawning : MonoBehaviour
 
     public void SpawnCurrentIce()
     {
+        if (!CanPlace()) return;
         SpawnIce(_currentType);
+        _spawnCount++;
+    }
+
+    public void AddSpawnCount(int amount)
+    {
+        _spawnCount += amount;
+        if (_spawnCount < 0) _spawnCount = 0;
+    }
+
+    private bool CanPlace()
+    {
+        return _spawnCount <= _spawnLimit;
     }
 }
