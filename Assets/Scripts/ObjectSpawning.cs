@@ -17,11 +17,6 @@ public class ObjectSpawning : MonoBehaviour
     private IceType _currentPreview;
     private GameObject _previewGO;
 
-    [Header("Ice Destroy Settings")]
-    [SerializeField] private Transform handOrigin;   // fingertip or palm
-    [SerializeField] private float rayLength = 5f;
-    [SerializeField] private LayerMask interactableLayer; // ice blocks layer
-
     private void SpawnIce(IceType type)
     {
         GameObject prefabToSpawn = null;
@@ -85,28 +80,5 @@ public class ObjectSpawning : MonoBehaviour
     public void SpawnCurrentIce()
     {
         SpawnIce(_currentType);
-    }
-
-    public void CastRayAndDestroy()
-    {
-        if (handOrigin == null)
-            return;
-
-        Vector3 start = handOrigin.position;
-        Vector3 direction = handOrigin.forward;
-
-        if (Physics.Raycast(start, direction, out RaycastHit hit, rayLength, interactableLayer))
-        {
-            Debug.DrawLine(start, hit.point, Color.green, 1f);
-
-            if (hit.collider.CompareTag("Ice"))
-            {
-                Destroy(hit.collider.gameObject);
-            }
-        }
-        else
-        {
-            Debug.DrawRay(start, direction * rayLength, Color.red, 1f);
-        }
     }
 }
