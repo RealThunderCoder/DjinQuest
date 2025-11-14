@@ -326,6 +326,17 @@ Transform:
   - {fileID: 2109175111}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &104634811 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5132080673206253129, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+  m_PrefabInstance: {fileID: 1988431994}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4733c5f009d26ad49b3685117b8d3eb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &117217946
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,6 +370,17 @@ Transform:
   - {fileID: 140065126}
   m_Father: {fileID: 1104174600}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &129787437 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1610028817, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+  m_PrefabInstance: {fileID: 1988431994}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7daff26e66096cd49a253ca3ab592c03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &140065125
 GameObject:
   m_ObjectHideFlags: 0
@@ -655,6 +677,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &661808113 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 359456607570606256, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+  m_PrefabInstance: {fileID: 1988431994}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bffe606b408599b4fad696ddc889a943, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &661808114 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5844005341903228241, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+  m_PrefabInstance: {fileID: 1988431994}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b942c16a6d6a4edaad7c18c7d5762cdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &905198359
 GameObject:
   m_ObjectHideFlags: 0
@@ -834,6 +878,8 @@ GameObject:
   - component: {fileID: 1148237189}
   - component: {fileID: 1148237188}
   - component: {fileID: 1148237187}
+  - component: {fileID: 1148237192}
+  - component: {fileID: 1148237191}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Untagged
@@ -934,6 +980,40 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1148237191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148237186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2140d2b457bea84881488302059889b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.Surfaces.ColliderSurface
+  _collider: {fileID: 1148237187}
+--- !u!114 &1148237192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148237186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb86ba9d4c5126e48bfef9b0c9550e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.RayInteractable
+  _interactorFilters: []
+  _maxInteractors: -1
+  _maxSelectingInteractors: -1
+  _data: {fileID: 0}
+  _pointableElement: {fileID: 0}
+  _surface: {fileID: 1148237191}
+  _selectSurface: {fileID: 0}
+  _movementProvider: {fileID: 0}
+  _tiebreakerScore: 0
 --- !u!1 &1233780248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1070,13 +1150,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6f9440d09721c849864899e8986e219, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.PoseDetection.TransformRecognizerActiveState
-  _hand: {fileID: 1988431999}
-  _transformFeatureStateProvider: {fileID: 1878527131}
+  _hand: {fileID: 129787437}
+  _transformFeatureStateProvider: {fileID: 661808113}
   _transformFeatureConfigs:
-    _values:
-    - _mode: 0
-      _feature: 5
-      _state: 15
+    _values: []
   _transformConfig:
     PositionOffset: {x: 0, y: 0, z: 0}
     RotationOffset: {x: 0, y: 0, z: 0}
@@ -1094,8 +1171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08f7cfb1f9629da4494ac0840f3a3cfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.PoseDetection.ShapeRecognizerActiveState
-  _hand: {fileID: 1988431999}
-  _fingerFeatureStateProvider: {fileID: 1878527132}
+  _hand: {fileID: 129787437}
+  _fingerFeatureStateProvider: {fileID: 661808114}
   _shapes:
   - {fileID: 11400000, guid: c69d0b49fc8a91f43bebd93e991e4d25, type: 2}
 --- !u!4 &1269547552
@@ -6556,17 +6633,6 @@ MonoBehaviour:
   installationRoutineCheckpoint:
     _installationRoutineId: 2063f481-1b63-4eda-9ee8-a00df98536bc
     _installationVariants: []
---- !u!114 &1988431998 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2032031666409119128, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
-  m_PrefabInstance: {fileID: 1988431994}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb7623a8f0b49cf4dbaa40aea4d4be64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1988431999 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1528346310, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
@@ -6941,8 +7007,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36284b00039ad934ca22440fe7b09d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectSpawning
-  rightHand: {fileID: 1988431998}
-  spawnLocation: {fileID: 603000991}
+  _rayInteractor: {fileID: 104634811}
   _currentType: 0
   _iceBlockPrefabs:
   - {fileID: 7957458760481550056, guid: a1bc0b0ef1d3bfb42b14b89a65a1542e, type: 3}

@@ -1,14 +1,15 @@
+using Oculus.Interaction;
 using UnityEngine;
 
 public class IceSpawner : MonoBehaviour
 {
     public static IceSpawner Instance { get; private set; }
 
-    [Header("Hand Reference")]
-    [SerializeField] private OVRHand rightHand;
+    [Header("Interactor Reference")]
+    [SerializeField] private RayInteractor _rayInteractor;
 
     [Header("Ice Block Spawning")]
-    [SerializeField] private Transform spawnLocation; // FOR TESTING ONLY, change to controller pos later
+    private Vector3 _spawnLocation; // FOR TESTING ONLY, change to controller pos later
     private enum IceType { Vertical };
     [SerializeField] private IceType _currentType = IceType.Vertical;
     [SerializeField] private GameObject[] _iceBlockPrefabs;
@@ -38,9 +39,11 @@ public class IceSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (_previewGO)
+        if (_previewGO && _rayInteractor.CollisionInfo.HasValue)
         {
-            // TODO: move preview where player's pointing to
+            Vector3 cursorPos = _rayInteractor.CollisionInfo.Value.Point;
+            _spawnLocation = new Vector3(cursorPos.x, cursorPos.y, cursorPos.z);
+            _previewGO.transform.SetPositionAndRotation(_spawnLocation, Quaternion.identity);
         }
     }
 
@@ -53,7 +56,7 @@ public class IceSpawner : MonoBehaviour
                 prefabToSpawn = _iceBlockPrefabs[0];
                 break;
         }
-        GameObject iceInstance = Instantiate(prefabToSpawn, spawnLocation.position, Quaternion.identity);
+        GameObject iceInstance = Instantiate(prefabToSpawn, _spawnLocation, Quaternion.identity);
         iceInstance.GetComponent<Animator>().SetTrigger("SummonIce");
     }
 
@@ -62,27 +65,33 @@ public class IceSpawner : MonoBehaviour
         if (type != _currentPreview || _previewGO == null)
         {
             _currentPreview = type;
-            _previewMatInstance.color = CanPlace()? Color.green : Color.red;
             switch (type)
             {
                 case IceType.Vertical:
-                    _previewGO = Instantiate(_iceBlockPrefabs[0], spawnLocation.position, Quaternion.identity);
+                    _previewGO = Instantiate(_iceBlockPrefabs[0], _spawnLocation, Quaternion.identity);
                     break;
             }
             // Make preview transparent and non-collidable
-            foreach (Renderer render in _previewGO.GetComponentsInChildren<Renderer>())
-            {
-                var mats = render.materials;
-                for (int i = 0; i < mats.Length; i++)
-                {
-                    mats[i] = _previewMatInstance;
-                }
-                render.materials = mats;
-            }
+            UpdatePreviewColor();
             foreach (Collider col in _previewGO.GetComponentsInChildren<Collider>())
             {
                 if (col) col.enabled = false;
             }
+        }
+    }
+
+    private void UpdatePreviewColor()
+    {
+        if (_previewGO == null) return;
+        _previewMatInstance.color = CanPlace() ? Color.green : Color.red;
+        foreach (Renderer render in _previewGO.GetComponentsInChildren<Renderer>())
+        {
+            var mats = render.materials;
+            for (int i = 0; i < mats.Length; i++)
+            {
+                mats[i] = _previewMatInstance;
+            }
+            render.materials = mats;
         }
     }
 
@@ -98,21 +107,22 @@ public class IceSpawner : MonoBehaviour
         {
             Debug.Log("Preview disabled");
             _isPreviewing = false;
-            Destroy(_previewGO);
+            if (_previewGO != null) Destroy(_previewGO);
         }
     }
 
     public void SpawnCurrentIce()
     {
-        if (!CanPlace()) return;
+        if (!CanPlace() || !_isPreviewing) return;
         SpawnIce(_currentType);
-        _spawnCount++;
+        AddSpawnCount(1);
     }
 
     public void AddSpawnCount(int amount)
     {
         _spawnCount += amount;
         if (_spawnCount < 0) _spawnCount = 0;
+        UpdatePreviewColor();
     }
 
     private bool CanPlace()
