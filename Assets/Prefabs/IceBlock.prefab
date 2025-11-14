@@ -91,7 +91,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4191132140941264901}
         m_TargetAssemblyTypeName: IceBlock, Assembly-CSharp
-        m_MethodName: DestroyIceBlock
+        m_MethodName: StartIceDestruction
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -280,6 +280,7 @@ GameObject:
   - component: {fileID: 6040636813461038697}
   - component: {fileID: 688641167637830635}
   - component: {fileID: 4191132140941264901}
+  - component: {fileID: 5944878880582206853}
   m_Layer: 0
   m_Name: IceBlock
   m_TagString: IceWall
@@ -338,3 +339,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9dc1f700f4176640819d007d04e77f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IceBlock
+--- !u!95 &5944878880582206853
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7957458760481550056}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1e8df0bef20ad9d4d982f9f709c42dea, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

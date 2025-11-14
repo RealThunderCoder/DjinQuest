@@ -53,7 +53,8 @@ public class IceSpawner : MonoBehaviour
                 prefabToSpawn = _iceBlockPrefabs[0];
                 break;
         }
-        Instantiate(prefabToSpawn, spawnLocation.position, Quaternion.identity);
+        GameObject iceInstance = Instantiate(prefabToSpawn, spawnLocation.position, Quaternion.identity);
+        iceInstance.GetComponent<Animator>().SetTrigger("SummonIce");
     }
 
     private void Preview(IceType type)
@@ -116,6 +117,6 @@ public class IceSpawner : MonoBehaviour
 
     private bool CanPlace()
     {
-        return _spawnCount <= _spawnLimit;
+        return _spawnCount < _spawnLimit;
     }
 }

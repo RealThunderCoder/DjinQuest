@@ -529,7 +529,7 @@ MonoBehaviour:
   _transformConfig:
     PositionOffset: {x: 0, y: 0, z: 0}
     RotationOffset: {x: 0, y: 0, z: 0}
-    UpVectorType: 0
+    UpVectorType: 2
     FeatureThresholds: {fileID: 11400000, guid: ecf606676408582499e01b2f6104f362, type: 2}
 --- !u!114 &386851163
 MonoBehaviour:
@@ -1080,7 +1080,7 @@ MonoBehaviour:
   _transformConfig:
     PositionOffset: {x: 0, y: 0, z: 0}
     RotationOffset: {x: 0, y: 0, z: 0}
-    UpVectorType: 0
+    UpVectorType: 2
     FeatureThresholds: {fileID: 11400000, guid: ecf606676408582499e01b2f6104f362, type: 2}
 --- !u!114 &1269547551
 MonoBehaviour:
@@ -6946,7 +6946,8 @@ MonoBehaviour:
   _currentType: 0
   _iceBlockPrefabs:
   - {fileID: 7957458760481550056, guid: a1bc0b0ef1d3bfb42b14b89a65a1542e, type: 3}
-  _previewMaterial: {fileID: 2100000, guid: 74db00c518b3e714cbd0219549879dfb, type: 2}
+  _spawnLimit: 1
+  _previewMaterial: {fileID: 2100000, guid: ca1b623691b3ba340a4b9b302e6436ee, type: 2}
 --- !u!1 &2136103030
 GameObject:
   m_ObjectHideFlags: 0
