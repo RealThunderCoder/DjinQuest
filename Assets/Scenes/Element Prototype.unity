@@ -541,13 +541,7 @@ MonoBehaviour:
   _hand: {fileID: 1988431999}
   _transformFeatureStateProvider: {fileID: 1878527131}
   _transformFeatureConfigs:
-    _values:
-    - _mode: 0
-      _feature: 2
-      _state: 6
-    - _mode: 0
-      _feature: 1
-      _state: 3
+    _values: []
   _transformConfig:
     PositionOffset: {x: 0, y: 0, z: 0}
     RotationOffset: {x: 0, y: 0, z: 0}
@@ -1190,6 +1184,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1478940674 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8000117573100952591, guid: 0a7d2469f24041c4284c66706f84c45e, type: 3}
+  m_PrefabInstance: {fileID: 1988431994}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1528965574
 GameObject:
   m_ObjectHideFlags: 0
@@ -6973,6 +6972,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2109175111}
   - component: {fileID: 2109175112}
+  - component: {fileID: 2109175113}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -7007,12 +7007,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36284b00039ad934ca22440fe7b09d10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObjectSpawning
-  _rayInteractor: {fileID: 104634811}
+  _input: {fileID: 2109175113}
   _currentType: 0
   _iceBlockPrefabs:
   - {fileID: 7957458760481550056, guid: a1bc0b0ef1d3bfb42b14b89a65a1542e, type: 3}
   _spawnLimit: 1
   _previewMaterial: {fileID: 2100000, guid: ca1b623691b3ba340a4b9b302e6436ee, type: 2}
+--- !u!114 &2109175113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109175110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68b2d1ce9b7338441bf5038c066a3489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInputHandler
+  <rayInteractor>k__BackingField: {fileID: 104634811}
+  _rightTipTransform: {fileID: 1478940674}
+  <spawnVelocityThreshold>k__BackingField: 3
 --- !u!1 &2136103030
 GameObject:
   m_ObjectHideFlags: 0

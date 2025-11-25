@@ -4,9 +4,7 @@ using UnityEngine;
 public class IceSpawner : MonoBehaviour
 {
     public static IceSpawner Instance { get; private set; }
-
-    [Header("Interactor Reference")]
-    [SerializeField] private RayInteractor _rayInteractor;
+    [SerializeField] private PlayerInputHandler _input;
 
     [Header("Ice Block Spawning")]
     private Vector3 _spawnLocation; // FOR TESTING ONLY, change to controller pos later
@@ -39,9 +37,9 @@ public class IceSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (_previewGO && _rayInteractor.CollisionInfo.HasValue)
+        if (_previewGO && _input.rayInteractor.CollisionInfo.HasValue)
         {
-            Vector3 cursorPos = _rayInteractor.CollisionInfo.Value.Point;
+            Vector3 cursorPos = _input.rayInteractor.CollisionInfo.Value.Point;
             _spawnLocation = new Vector3(cursorPos.x, cursorPos.y, cursorPos.z);
             _previewGO.transform.SetPositionAndRotation(_spawnLocation, Quaternion.identity);
         }
@@ -113,7 +111,7 @@ public class IceSpawner : MonoBehaviour
 
     public void SpawnCurrentIce()
     {
-        if (!CanPlace() || !_isPreviewing) return;
+        if (!CanPlace() || !_isPreviewing || _input.tipVelocity.y < -_input.spawnVelocityThreshold) return;
         SpawnIce(_currentType);
         AddSpawnCount(1);
     }
