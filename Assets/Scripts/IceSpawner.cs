@@ -4,7 +4,9 @@ using UnityEngine;
 public class IceSpawner : MonoBehaviour
 {
     public static IceSpawner Instance { get; private set; }
+    [Header("Input")]
     [SerializeField] private PlayerInputHandler _input;
+    [SerializeField] private Grid _grid;
 
     [Header("Ice Block Spawning")]
     private Vector3 _spawnLocation; // FOR TESTING ONLY, change to controller pos later
@@ -18,6 +20,7 @@ public class IceSpawner : MonoBehaviour
     [SerializeField] private Material _previewMaterial;
     private Material _previewMatInstance;
     private bool _isPreviewing = false;
+    private bool _isPlacing = false;
     private IceType _currentPreview;
     private GameObject _previewGO;
 
@@ -33,16 +36,41 @@ public class IceSpawner : MonoBehaviour
         }
 
         _previewMatInstance = new Material(_previewMaterial);
+        _grid = GameObject.FindWithTag("MainMap").GetComponent<Grid>();
     }
 
     private void Update()
     {
-        if (_previewGO && _input.rayInteractor.CollisionInfo.HasValue)
+        PreviewCheck();
+        PlacingCheck();
+    }
+
+    private void PreviewCheck()
+    {
+        if (_previewGO)
         {
-            Vector3 cursorPos = _input.rayInteractor.CollisionInfo.Value.Point;
-            _spawnLocation = new Vector3(cursorPos.x, cursorPos.y, cursorPos.z);
+            if (!_input.IsValidSelection())
+            {
+                _previewGO.SetActive(false);
+            }
+            else if (!_previewGO.activeSelf)
+            {
+                _previewGO.SetActive(true);
+            }
+            // Display preview in game
+            Vector3Int cellLocation = _grid.WorldToCell(_input.GetSelectedPosition());
+            _spawnLocation = _grid.CellToWorld(cellLocation);
+            Debug.Log($"Pointing at {_input.GetSelectedPosition()}");
+            Debug.Log($"Previewing at {_spawnLocation}");
             _previewGO.transform.SetPositionAndRotation(_spawnLocation, Quaternion.identity);
         }
+    }
+
+    private void PlacingCheck()
+    {
+        if (!CanPlace() || _input.fingerVelocity.y < _input.spawnVelocityThreshold) return;
+        SpawnIce(_currentType);
+        AddSpawnCount(1);
     }
 
     private void SpawnIce(IceType type)
@@ -81,7 +109,7 @@ public class IceSpawner : MonoBehaviour
     private void UpdatePreviewColor()
     {
         if (_previewGO == null) return;
-        _previewMatInstance.color = CanPlace() ? Color.green : Color.red;
+        _previewMatInstance.color = SpawnLimitCheck() ? Color.green : Color.red;
         foreach (Renderer render in _previewGO.GetComponentsInChildren<Renderer>())
         {
             var mats = render.materials;
@@ -109,11 +137,18 @@ public class IceSpawner : MonoBehaviour
         }
     }
 
-    public void SpawnCurrentIce()
+    public void ToggleSpawning()
     {
-        if (!CanPlace() || !_isPreviewing || _input.tipVelocity.y < -_input.spawnVelocityThreshold) return;
-        SpawnIce(_currentType);
-        AddSpawnCount(1);
+        if (!_isPlacing)
+        {
+            Debug.Log("Placing enabled");
+            _isPlacing = true;
+        }
+        else
+        {
+            Debug.Log("Placing disabled");
+            _isPlacing = false;
+        }
     }
 
     public void AddSpawnCount(int amount)
@@ -124,6 +159,11 @@ public class IceSpawner : MonoBehaviour
     }
 
     private bool CanPlace()
+    {
+        return (_isPlacing && SpawnLimitCheck() && _isPreviewing);
+    }
+
+    private bool SpawnLimitCheck()
     {
         return _spawnCount < _spawnLimit;
     }
