@@ -5,13 +5,13 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/Element Prototype.unity
+    guid: 024968e6e59b51542984a0bfaae68c38
   - enabled: 0
     path: Assets/L_Olympus.unity
     guid: 8e1a89be01b92e94890fb2acd8e65195
-  - enabled: 1
+  - enabled: 0
     path: Assets/L_Olympus 1.unity
     guid: bc53bb5eb774a8b45a084279501528d3
   m_configObjects:
