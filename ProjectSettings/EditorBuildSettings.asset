@@ -9,10 +9,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Element Prototype.unity
     guid: 024968e6e59b51542984a0bfaae68c38
   - enabled: 0
-    path: Assets/L_Olympus.unity
+    path: Assets/Scenes/L_Olympus.unity
     guid: 8e1a89be01b92e94890fb2acd8e65195
   - enabled: 0
-    path: Assets/L_Olympus 1.unity
+    path: Assets/Scenes/L_Olympus 1.unity
     guid: bc53bb5eb774a8b45a084279501528d3
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 94033dbc921ae5c4893b662644008ca9, type: 2}
