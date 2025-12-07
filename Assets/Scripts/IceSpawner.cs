@@ -49,6 +49,7 @@ public class IceSpawner : MonoBehaviour
     {
         if (_previewGO)
         {
+            /*
             if (!_input.IsValidSelection())
             {
                 _previewGO.SetActive(false);
@@ -56,7 +57,7 @@ public class IceSpawner : MonoBehaviour
             else if (!_previewGO.activeSelf)
             {
                 _previewGO.SetActive(true);
-            }
+            }*/
             // Display preview in game
             Vector3Int cellLocation = _grid.WorldToCell(_input.GetSelectedPosition());
             _spawnLocation = _grid.CellToWorld(cellLocation);

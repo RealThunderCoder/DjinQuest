@@ -4,23 +4,23 @@ using UnityEngine.Windows;
 
 public class PlayerInputHandler : MonoBehaviour
 {
-    [field: SerializeField]
-    public RayInteractor rayInteractor {  get; private set; }
     [SerializeField] private Transform _fingerTipTransform;
+    [SerializeField] private Transform _bodyTransform;
+    [SerializeField] private float selectionDistanceMultiplier = 1.0f;
 
     [field:SerializeField]
     public float spawnVelocityThreshold { get; private set; }
     public Vector3 fingerVelocity { get; private set; }
     private Vector3 _lastFingerPos;
 
-    private Vector3 _lastRayPos;
+    private Vector3 _lastSelectedPos;
 
     void Update()
     {
         UpdateFingerVelocity();
     }
 
-    // Tracks finger tip veloocity, stores it in fingerVelocity
+    // Tracks finger tip velocity, stores it in fingerVelocity
     private void UpdateFingerVelocity()
     {
         Vector3 currentPos = _fingerTipTransform.position;
@@ -30,14 +30,15 @@ public class PlayerInputHandler : MonoBehaviour
 
     public Vector3 GetSelectedPosition()
     {
-        if (!rayInteractor.CollisionInfo.HasValue) return _lastRayPos;
+        if (_fingerTipTransform == null || _bodyTransform == null)
+            return _lastSelectedPos;
 
-        _lastRayPos = rayInteractor.CollisionInfo.Value.Point;
-        return _lastRayPos;
-    }
+        // Vector from body to hand
+        Vector3 bodyToHand = _fingerTipTransform.position - _bodyTransform.position;
+        Vector3 selectionPos = _bodyTransform.position + bodyToHand * selectionDistanceMultiplier;
+        selectionPos = new Vector3(selectionPos.x, _bodyTransform.position.y, selectionPos.z); // levels the y value
 
-    public bool IsValidSelection()
-    {
-        return rayInteractor.CollisionInfo.HasValue;
+        _lastSelectedPos = selectionPos;
+        return _lastSelectedPos;
     }
 }
