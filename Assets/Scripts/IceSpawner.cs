@@ -7,7 +7,8 @@ public class IceSpawner : MonoBehaviour
     [Header("Input")]
     [SerializeField] private PlayerInputHandler _input;
     [SerializeField] private Grid _grid;
-
+[Header("Movement Object")]
+[SerializeField] public MoveYController moveController;
     [Header("Ice Block Spawning")]
     private Vector3 _spawnLocation; // FOR TESTING ONLY, change to controller pos later
     private enum IceType { Vertical };
@@ -85,6 +86,10 @@ public class IceSpawner : MonoBehaviour
         }
         GameObject iceInstance = Instantiate(prefabToSpawn, _spawnLocation, Quaternion.identity);
         iceInstance.GetComponent<Animator>().SetTrigger("SummonIce");
+        
+    //  MOVE THE OTHER OBJECT UP
+    if (moveController != null)
+        moveController.MoveUp();
     }
 
     private void Preview(IceType type)

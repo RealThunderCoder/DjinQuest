@@ -7,6 +7,8 @@ TagManager:
   - Ice
   - IceWall
   - MainMap
+  - ResetWall
+  - DoorTrigger
   layers:
   - Default
   - TransparentFX
