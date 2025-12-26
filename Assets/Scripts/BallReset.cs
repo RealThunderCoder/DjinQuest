@@ -45,7 +45,7 @@ public DoorMover rightDoor;
     private void ResetBall()
     {
         // Stop any movement
-        rb.velocity = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
         // Disable physics temporarily
