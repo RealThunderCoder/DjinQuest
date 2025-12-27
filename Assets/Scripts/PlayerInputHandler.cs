@@ -30,13 +30,10 @@ public class PlayerInputHandler : MonoBehaviour
 
     public Vector3 GetSelectedPosition()
     {
-        if (_fingerTipTransform == null || _bodyTransform == null)
-            return _lastSelectedPos;
-
-        // Vector from body to hand
         Vector3 bodyToHand = _fingerTipTransform.position - _bodyTransform.position;
-        Vector3 selectionPos = _bodyTransform.position + bodyToHand * selectionDistanceMultiplier;
-        selectionPos = new Vector3(selectionPos.x, _bodyTransform.position.y, selectionPos.z); // levels the y value
+        bodyToHand.y = 0;
+        Vector3 selectionPos = _bodyTransform.position + (bodyToHand * selectionDistanceMultiplier);
+        selectionPos.y = _bodyTransform.position.y;
 
         _lastSelectedPos = selectionPos;
         return _lastSelectedPos;

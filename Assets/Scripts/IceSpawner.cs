@@ -7,13 +7,12 @@ public class IceSpawner : MonoBehaviour
     [Header("Input")]
     [SerializeField] private PlayerInputHandler _input;
     [SerializeField] private Grid _grid;
-[Header("Movement Object")]
-[SerializeField] public MoveYController moveController;
+    [Header("Movement Object")]
+    [SerializeField] public MoveYController moveController;
     [Header("Ice Block Spawning")]
-    private Vector3 _spawnLocation; // FOR TESTING ONLY, change to controller pos later
-    private enum IceType { Vertical };
-    [SerializeField] private IceType _currentType = IceType.Vertical;
-    [SerializeField] private GameObject[] _iceBlockPrefabs;
+    private Vector3 _spawnLocation;
+    private GridData _mainGridData;
+    [SerializeField] private BuildableObjectDataSO _currentType;
     [SerializeField] private int _spawnLimit = 1;
     private int _spawnCount;
 
@@ -22,7 +21,6 @@ public class IceSpawner : MonoBehaviour
     private Material _previewMatInstance;
     private bool _isPreviewing = false;
     private bool _isPlacing = false;
-    private IceType _currentPreview;
     private GameObject _previewGO;
 
     private void Start()
@@ -38,6 +36,7 @@ public class IceSpawner : MonoBehaviour
 
         _previewMatInstance = new Material(_previewMaterial);
         _grid = GameObject.FindWithTag("MainMap").GetComponent<Grid>();
+        _mainGridData = new GridData();
     }
 
     private void Update()
@@ -50,21 +49,12 @@ public class IceSpawner : MonoBehaviour
     {
         if (_previewGO)
         {
-            /*
-            if (!_input.IsValidSelection())
-            {
-                _previewGO.SetActive(false);
-            }
-            else if (!_previewGO.activeSelf)
-            {
-                _previewGO.SetActive(true);
-            }*/
             // Display preview in game
             Vector3Int cellLocation = _grid.WorldToCell(_input.GetSelectedPosition());
-            _spawnLocation = _grid.CellToWorld(cellLocation);
-            Debug.Log($"Pointing at {_input.GetSelectedPosition()}");
-            Debug.Log($"Previewing at {_spawnLocation}");
+            Vector3Int offset = new Vector3Int(_currentType.Offset.x, 0, _currentType.Offset.y);
+            _spawnLocation = _grid.CellToWorld(cellLocation) + offset;
             _previewGO.transform.SetPositionAndRotation(_spawnLocation, Quaternion.identity);
+            UpdatePreviewColor();
         }
     }
 
@@ -75,36 +65,24 @@ public class IceSpawner : MonoBehaviour
         AddSpawnCount(1);
     }
 
-    private void SpawnIce(IceType type)
+    private void SpawnIce(BuildableObjectDataSO type)
     {
-        GameObject prefabToSpawn = null;
-        switch (type)
-        {
-            case IceType.Vertical:
-                prefabToSpawn = _iceBlockPrefabs[0];
-                break;
-        }
-        GameObject iceInstance = Instantiate(prefabToSpawn, _spawnLocation, Quaternion.identity);
+        GameObject iceInstance = Instantiate(type.Prefab, _spawnLocation, Quaternion.identity);
+        _mainGridData.AddObject(_spawnLocation, _currentType);
         iceInstance.GetComponent<Animator>().SetTrigger("SummonIce");
         
-    //  MOVE THE OTHER OBJECT UP
-    if (moveController != null)
-        moveController.MoveUp();
-    }
+        //  MOVE THE OTHER OBJECT UP
+        if (moveController != null)
+            moveController.MoveUp();
+        }
 
-    private void Preview(IceType type)
+    private void Preview(BuildableObjectDataSO type)
     {
-        if (type != _currentPreview || _previewGO == null)
+        if (_previewGO == null)
         {
-            _currentPreview = type;
-            switch (type)
-            {
-                case IceType.Vertical:
-                    _previewGO = Instantiate(_iceBlockPrefabs[0], _spawnLocation, Quaternion.identity);
-                    break;
-            }
-            // Make preview transparent and non-collidable
+            _previewGO = Instantiate(type.Prefab, _spawnLocation, Quaternion.identity);
             UpdatePreviewColor();
+            // Make preview transparent and non-collidable
             foreach (Collider col in _previewGO.GetComponentsInChildren<Collider>())
             {
                 if (col) col.enabled = false;
@@ -115,7 +93,11 @@ public class IceSpawner : MonoBehaviour
     private void UpdatePreviewColor()
     {
         if (_previewGO == null) return;
-        _previewMatInstance.color = SpawnLimitCheck() ? Color.green : Color.red;
+        Debug.Log($"Limit OK: {SpawnLimitCheck()}, Space OK: {_mainGridData.CanPlaceAt(_spawnLocation, _currentType.Size)}");
+        _previewMatInstance.color = (SpawnLimitCheck() &&
+            _mainGridData.CanPlaceAt(_spawnLocation, _currentType.Size))
+            ? Color.green : Color.red;
+
         foreach (Renderer render in _previewGO.GetComponentsInChildren<Renderer>())
         {
             var mats = render.materials;
@@ -164,9 +146,15 @@ public class IceSpawner : MonoBehaviour
         UpdatePreviewColor();
     }
 
+    public void RemoveSpawnData(Vector3 position, BuildableObjectDataSO data)
+    {
+        _mainGridData.RemoveObject(position, data);
+    }
+
     private bool CanPlace()
     {
-        return (_isPlacing && SpawnLimitCheck() && _isPreviewing);
+        return (_isPlacing && SpawnLimitCheck() && _isPreviewing &&
+            _mainGridData.CanPlaceAt(_spawnLocation, _currentType.Size));
     }
 
     private bool SpawnLimitCheck()

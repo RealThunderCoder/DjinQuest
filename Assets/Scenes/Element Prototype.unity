@@ -261,6 +261,7 @@ MonoBehaviour:
   requestEyeTrackingPermissionOnStartup: 0
   requestScenePermissionOnStartup: 1
   requestRecordAudioPermissionOnStartup: 0
+  requestPassthroughCameraAccessPermissionOnStartup: 0
   _localDimming: 1
   _trackingOriginType: 1
   usePositionTracking: 1
@@ -985,7 +986,7 @@ Grid:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1148237186}
   m_Enabled: 1
-  m_CellSize: {x: 0.1, y: 0.1, z: 0.1}
+  m_CellSize: {x: 0.2, y: 0.2, z: 0.2}
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
@@ -7133,10 +7134,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObjectSpawning
   _input: {fileID: 2109175113}
   _grid: {fileID: 0}
-  _currentType: 0
-  _iceBlockPrefabs:
-  - {fileID: 7957458760481550056, guid: a1bc0b0ef1d3bfb42b14b89a65a1542e, type: 3}
-  _spawnLimit: 1
+  moveController: {fileID: 0}
+  _currentType: {fileID: 11400000, guid: fbdb7f6b552a9fc4e9cec58cfedecfd9, type: 2}
+  _spawnLimit: 3
   _previewMaterial: {fileID: 2100000, guid: ca1b623691b3ba340a4b9b302e6436ee, type: 2}
 --- !u!114 &2109175113
 MonoBehaviour:
