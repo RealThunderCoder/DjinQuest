@@ -10,6 +10,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     [field:SerializeField]
     public float spawnVelocityThreshold { get; private set; }
+    [field: SerializeField]
+    public float rotationVelocityThreshold { get; private set; }
     public Vector3 fingerVelocity { get; private set; }
     private Vector3 _lastFingerPos;
 

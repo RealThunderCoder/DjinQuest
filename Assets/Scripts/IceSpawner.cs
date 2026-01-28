@@ -69,7 +69,7 @@ public class IceSpawner : MonoBehaviour
 
     private void RotationCheck()
     {
-        if (_previewGO == null || _input.fingerVelocity.x < _input.spawnVelocityThreshold) return;
+        if (_previewGO == null || _input.fingerVelocity.x < _input.rotationVelocityThreshold) return;
         RotatePreview();
     }
 
