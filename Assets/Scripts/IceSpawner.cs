@@ -22,6 +22,7 @@ public class IceSpawner : MonoBehaviour
     private bool _isPreviewing = false;
     private bool _isPlacing = false;
     private GameObject _previewGO;
+    private int _rotationIndex = 0;
 
     private void Start()
     {
@@ -42,6 +43,7 @@ public class IceSpawner : MonoBehaviour
     private void Update()
     {
         PreviewCheck();
+        RotationCheck();
         PlacingCheck();
     }
 
@@ -53,7 +55,7 @@ public class IceSpawner : MonoBehaviour
             Vector3Int cellLocation = _grid.WorldToCell(_input.GetSelectedPosition());
             Vector3Int offset = new Vector3Int(_currentType.Offset.x, 0, _currentType.Offset.y);
             _spawnLocation = _grid.CellToWorld(cellLocation) + offset;
-            _previewGO.transform.SetPositionAndRotation(_spawnLocation, Quaternion.identity);
+            _previewGO.transform.SetPositionAndRotation(_spawnLocation, Quaternion.Euler(0, _rotationIndex * 90f, 0));
             UpdatePreviewColor();
         }
     }
@@ -65,16 +67,22 @@ public class IceSpawner : MonoBehaviour
         AddSpawnCount(1);
     }
 
+    private void RotationCheck()
+    {
+        if (_previewGO == null || _input.fingerVelocity.x < _input.spawnVelocityThreshold) return;
+        RotatePreview();
+    }
+
     private void SpawnIce(BuildableObjectDataSO type)
     {
-        GameObject iceInstance = Instantiate(type.Prefab, _spawnLocation, Quaternion.identity);
+        GameObject iceInstance = Instantiate(type.Prefab, _spawnLocation, Quaternion.Euler(0, _rotationIndex * 90f, 0));
         _mainGridData.AddObject(_spawnLocation, _currentType);
         iceInstance.GetComponent<Animator>().SetTrigger("SummonIce");
         
         //  MOVE THE OTHER OBJECT UP
         if (moveController != null)
             moveController.MoveUp();
-        }
+    }
 
     private void Preview(BuildableObjectDataSO type)
     {
@@ -87,6 +95,16 @@ public class IceSpawner : MonoBehaviour
             {
                 if (col) col.enabled = false;
             }
+        }
+    }
+
+    private void RotatePreview()
+    {
+        _rotationIndex = (_rotationIndex + 1) % 4;
+
+        if (_previewGO != null)
+        {
+            _previewGO.transform.rotation = Quaternion.Euler(0, _rotationIndex * 90f, 0);
         }
     }
 
