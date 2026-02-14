@@ -1,9 +1,12 @@
+using System;
 using Oculus.Interaction;
 using UnityEngine;
 
 public class IceSpawner : MonoBehaviour
 {
     public static IceSpawner Instance { get; private set; }
+    public static event Action<IceBlock> IceSpawned;
+    public static event Action<IceBlock> IceDestroyed;
     [Header("Input")]
     [SerializeField] private PlayerInputHandler _input;
     [SerializeField] private Grid _grid;
@@ -78,10 +81,20 @@ public class IceSpawner : MonoBehaviour
         GameObject iceInstance = Instantiate(type.Prefab, _spawnLocation, Quaternion.Euler(0, _rotationIndex * 90f, 0));
         _mainGridData.AddObject(_spawnLocation, _currentType);
         iceInstance.GetComponent<Animator>().SetTrigger("SummonIce");
+        IceBlock iceBlock = iceInstance.GetComponent<IceBlock>();
+        if (iceBlock != null)
+        {
+            IceSpawned?.Invoke(iceBlock);
+        }
         
         //  MOVE THE OTHER OBJECT UP
         if (moveController != null)
             moveController.MoveUp();
+    }
+
+    public static void NotifyIceDestroyed(IceBlock iceBlock)
+    {
+        IceDestroyed?.Invoke(iceBlock);
     }
 
     private void Preview(BuildableObjectDataSO type)

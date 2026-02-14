@@ -17,9 +17,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Level 1.unity
     guid: ac0b2e0153c79f04a85731221aaf8daa
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Ghassan Elemental.unity
     guid: 5dc6df59cee189d4b8e1283b16cf126e
+  - enabled: 1
+    path: Assets/Scenes/Trythings.unity
+    guid: d8881bf0a481e6d4dba62ee4755f3fb0
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 94033dbc921ae5c4893b662644008ca9, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

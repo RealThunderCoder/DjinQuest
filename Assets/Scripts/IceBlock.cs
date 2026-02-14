@@ -15,6 +15,7 @@ public class IceBlock : MonoBehaviour
         IceSpawner.Instance.RemoveSpawnData(transform.position, _data);
         if (IceSpawner.Instance.moveController != null)
         IceSpawner.Instance.moveController.MoveDown();
+        IceSpawner.NotifyIceDestroyed(this);
         Destroy(gameObject);
     }
 }
