@@ -9,6 +9,7 @@ TagManager:
   - MainMap
   - ResetWall
   - DoorTrigger
+  - Mazebox
   layers:
   - Default
   - TransparentFX
