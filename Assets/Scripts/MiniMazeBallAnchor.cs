@@ -7,6 +7,8 @@ public class MiniMazeBallAnchor : MonoBehaviour
     [SerializeField] private Transform ballBegin;
     [SerializeField] private Component mazeBoxGrabbable;
     [SerializeField] private bool lockToAnchorWhenNotGrabbed = true;
+    [Header("Speed settings")]
+    [SerializeField] private float _maxSpeed = 1f;
 
     private Rigidbody rb;
     private bool wasGrabbed;
@@ -48,6 +50,14 @@ public class MiniMazeBallAnchor : MonoBehaviour
             {
                 AnchorBall();
             }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (rb.linearVelocity.magnitude > _maxSpeed)
+        {
+            rb.linearVelocity = rb.linearVelocity.normalized * _maxSpeed;
         }
     }
 
