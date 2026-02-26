@@ -26,25 +26,18 @@ public class MiniMazeBallAnchor : MonoBehaviour
     private void Update()
     {
         if (ballBegin == null || mazeBoxGrabbable == null)
-        {
             return;
-        }
 
         bool isGrabbed = GetIsGrabbed();
-        if (isGrabbed)
+
+        if (isGrabbed && !wasGrabbed)
         {
-            if (!wasGrabbed)
-            {
-                wasGrabbed = true;
-                SetPhysicsEnabled(true);
-            }
+            wasGrabbed = true;
+            SetPhysicsEnabled(true);
         }
-        else
+        else if (!isGrabbed && wasGrabbed)
         {
-            if (wasGrabbed)
-            {
-                wasGrabbed = false;
-            }
+            wasGrabbed = false;
 
             if (lockToAnchorWhenNotGrabbed)
             {
@@ -63,7 +56,7 @@ public class MiniMazeBallAnchor : MonoBehaviour
 
     private void AnchorBall()
     {
-        if (rb != null)
+        if (rb != null && !rb.isKinematic)
         {
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
