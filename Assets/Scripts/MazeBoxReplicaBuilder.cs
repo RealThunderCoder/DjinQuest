@@ -8,6 +8,7 @@ public class MazeBoxReplicaBuilder : MonoBehaviour
     [SerializeField] private Transform miniMazeRoot;
     [SerializeField] private float miniScale = 0.1f;
     [SerializeField] private bool buildOnStart = true;
+    [SerializeField] private MiniMazeBallAnchor ballAnchorScript;
 
     [Header("Cleanup")]
     [SerializeField] private bool removeMonoBehaviours = true;
@@ -63,6 +64,14 @@ public class MazeBoxReplicaBuilder : MonoBehaviour
         {
             SetRigidbodiesKinematic(miniInstance);
         }
+
+        // Search for the anchor in the new replica
+        Transform foundAnchor = FindDeepChild(miniInstance.transform, "MazeBallStart");
+
+       /* if (foundAnchor != null && ballAnchorScript != null)
+        {
+            ballAnchorScript.UpdateBallAnchor(foundAnchor);
+        }*/
     }
 
     private void RemoveBehaviours(GameObject root)
@@ -70,7 +79,8 @@ public class MazeBoxReplicaBuilder : MonoBehaviour
         List<MonoBehaviour> behaviours = new List<MonoBehaviour>(root.GetComponentsInChildren<MonoBehaviour>(true));
         foreach (MonoBehaviour behaviour in behaviours)
         {
-            Destroy(behaviour);
+              if (behaviour != this && behaviour.GetType() != typeof(MiniMazeBallAnchor)) // Safety check
+                Destroy(behaviour);
         }
     }
 
@@ -82,5 +92,16 @@ public class MazeBoxReplicaBuilder : MonoBehaviour
             body.isKinematic = true;
             body.useGravity = false;
         }
+    }
+
+    private Transform FindDeepChild(Transform parent, string name)
+    {
+        foreach (Transform child in parent)
+        {
+            if (child.name == name) return child;
+            Transform result = FindDeepChild(child, name);
+            if (result != null) return result;
+        }
+        return null;
     }
 }

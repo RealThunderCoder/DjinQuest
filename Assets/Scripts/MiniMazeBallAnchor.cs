@@ -1,104 +1,111 @@
-using System;
-using System.Reflection;
 using UnityEngine;
+using Oculus.Interaction;
+using System.Collections;
 
 public class MiniMazeBallAnchor : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField] private Grabbable mazeBoxGrabbable;
     [SerializeField] private Transform ballBegin;
-    [SerializeField] private Component mazeBoxGrabbable;
-    [SerializeField] private bool lockToAnchorWhenNotGrabbed = true;
-    [Header("Speed settings")]
-    [SerializeField] private float _maxSpeed = 1f;
-
     private Rigidbody rb;
-    private bool wasGrabbed;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+
+        if (mazeBoxGrabbable == null)
+            Debug.LogError("mazeBoxGrabbable NOT assigned in inspector!");
+        else
+            Debug.Log("mazeBoxGrabbable assigned correctly: " + mazeBoxGrabbable.name);
+    }
+
+    private void OnEnable()
+    {
+        if (mazeBoxGrabbable != null)
+        {
+            mazeBoxGrabbable.WhenPointerEventRaised += HandlePointerEvent;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (mazeBoxGrabbable != null)
+        {
+            mazeBoxGrabbable.WhenPointerEventRaised -= HandlePointerEvent;
+        }
     }
 
     private void Start()
     {
+        if (ballBegin != null)
+            AnchorBall();
+    }
+
+    // Called externally when maze is built
+    public void UpdateBallAnchor(Transform newAnchor)
+    {
+        ballBegin = newAnchor;
+
+        transform.localScale = newAnchor.lossyScale;
+
         AnchorBall();
     }
 
-    private void Update()
+    private void HandlePointerEvent(PointerEvent evt)
     {
-        if (ballBegin == null || mazeBoxGrabbable == null)
-            return;
-
-        bool isGrabbed = GetIsGrabbed();
-
-        if (isGrabbed && !wasGrabbed)
+        if (evt.Type == PointerEventType.Select)
         {
-            wasGrabbed = true;
-            SetPhysicsEnabled(true);
+            ReleaseBall();
         }
-        else if (!isGrabbed && wasGrabbed)
+        else if (evt.Type == PointerEventType.Unselect)
         {
-            wasGrabbed = false;
-
-            if (lockToAnchorWhenNotGrabbed)
-            {
-                AnchorBall();
-            }
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        if (rb.linearVelocity.magnitude > _maxSpeed)
-        {
-            rb.linearVelocity = rb.linearVelocity.normalized * _maxSpeed;
+            AnchorBall();
         }
     }
 
     private void AnchorBall()
     {
-        if (rb != null && !rb.isKinematic)
+        if (rb != null)
         {
+            rb.isKinematic = true;
+            rb.useGravity = false;
+
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
         }
 
-        transform.position = ballBegin.position;
-        transform.rotation = ballBegin.rotation;
-        SetPhysicsEnabled(false);
+        if (ballBegin != null)
+        {
+            transform.SetParent(ballBegin);
+
+            transform.position = ballBegin.position;
+            transform.rotation = ballBegin.rotation;
+        }
     }
 
-    private void SetPhysicsEnabled(bool enabled)
+    private void ReleaseBall()
     {
-        if (rb == null)
-        {
-            return;
-        }
+        // Detach first
+        transform.SetParent(null);
 
-        rb.isKinematic = !enabled;
-        rb.useGravity = enabled;
+        // Enable physics safely next physics step
+        StartCoroutine(EnableBallNextFixedFrame());
     }
 
-    private bool GetIsGrabbed()
+    private IEnumerator EnableBallNextFixedFrame()
     {
-        Type type = mazeBoxGrabbable.GetType();
-        PropertyInfo prop = type.GetProperty("IsGrabbed");
-        if (prop != null && prop.PropertyType == typeof(bool))
-        {
-            return (bool)prop.GetValue(mazeBoxGrabbable);
-        }
+        yield return new WaitForFixedUpdate();
 
-        prop = type.GetProperty("isGrabbed");
-        if (prop != null && prop.PropertyType == typeof(bool))
+        if (rb != null)
         {
-            return (bool)prop.GetValue(mazeBoxGrabbable);
-        }
+            rb.isKinematic = false;
+            rb.useGravity = true;
 
-        MethodInfo method = type.GetMethod("IsGrabbed", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-        if (method != null && method.ReturnType == typeof(bool))
-        {
-            return (bool)method.Invoke(mazeBoxGrabbable, null);
-        }
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
 
-        return false;
+            Physics.SyncTransforms();
+            rb.WakeUp();
+        }
     }
 }
