@@ -68,10 +68,10 @@ public class MazeBoxReplicaBuilder : MonoBehaviour
         // Search for the anchor in the new replica
         Transform foundAnchor = FindDeepChild(miniInstance.transform, "MazeBallStart");
 
-       /* if (foundAnchor != null && ballAnchorScript != null)
+        if (foundAnchor != null && ballAnchorScript != null)
         {
             ballAnchorScript.UpdateBallAnchor(foundAnchor);
-        }*/
+        }
     }
 
     private void RemoveBehaviours(GameObject root)

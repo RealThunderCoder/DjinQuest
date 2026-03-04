@@ -12,6 +12,7 @@ public class MiniMazeBallAnchor : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        if (rb) rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
         if (mazeBoxGrabbable == null)
             Debug.LogError("mazeBoxGrabbable NOT assigned in inspector!");
@@ -85,9 +86,6 @@ public class MiniMazeBallAnchor : MonoBehaviour
 
     private void ReleaseBall()
     {
-        // Detach first
-        transform.SetParent(null);
-
         // Enable physics safely next physics step
         StartCoroutine(EnableBallNextFixedFrame());
     }
