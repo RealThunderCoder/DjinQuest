@@ -1521,8 +1521,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ff0a8d54a1b1d649969528f0444065c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  head: {fileID: 420963358}
-  spawnDistance: 10
+  head: {fileID: 2001301423}
+  spawnDistance: 15
   canvas: {fileID: 671930089}
 --- !u!4 &1142957479
 Transform:
@@ -1547,7 +1547,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1142957477}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 17f66d1c603c06e4481dbca6778cb347, type: 3}
   m_Name: 
@@ -2207,7 +2207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
