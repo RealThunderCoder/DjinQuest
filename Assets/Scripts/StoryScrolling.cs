@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class StoryScrolling : MonoBehaviour
 {
+    public GameObject[] panels;
     public GameObject Panel1;
     public GameObject Panel2;
     public GameObject Panel3;
@@ -14,15 +15,16 @@ public class StoryScrolling : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        /*
-        Color P1Color = Panel1.color;
-        Color P2Color = Panel2.color;
-        Color P3Color = Panel3.color;
-        Color P4Color = Panel4.color;
-        Color P5Color = Panel5.color;
-        */
-        DelayedAction(5f);
-        FadeInPanel(Panel1, 2f);
+        panels = new GameObject[] { Panel1, Panel2, Panel3, Panel4, Panel5 };
+
+        DelayedAction(startDelay);
+        swapPanel(panels[1], panels[0]);
+        DelayedAction(startDelay); 
+        swapPanel(panels[2], panels[1]);
+        DelayedAction(startDelay);
+        swapPanel(panels[3], panels[2]);
+        DelayedAction(startDelay);
+        swapPanel(panels[4], panels[3]);
     }
 
     // Update is called once per frame
@@ -31,6 +33,11 @@ public class StoryScrolling : MonoBehaviour
         
     }
 
+    public void swapPanel(GameObject panelToActivate, GameObject panelToDeactivate)
+    {
+        panelToActivate.SetActive(true);
+        panelToDeactivate.SetActive(false);
+    }
     IEnumerator DelayedAction(float delayTime)
     {
         Debug.Log("Action started at: " + Time.time);
@@ -41,6 +48,7 @@ public class StoryScrolling : MonoBehaviour
         // Code here will execute after the delay
         Debug.Log("Action finished at: " + Time.time);
     }
+    /*
     public void FadeInPanel(GameObject panel, float duration)
     {
         for (float t = 0; t < duration; t += Time.deltaTime)
@@ -49,4 +57,5 @@ public class StoryScrolling : MonoBehaviour
             panel.GetComponent<Image>().color = new Color(1, 1, 1, alpha);
         }
     }
+    */
 }
