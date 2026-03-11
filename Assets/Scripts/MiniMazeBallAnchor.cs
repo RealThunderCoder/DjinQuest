@@ -52,6 +52,12 @@ public class MiniMazeBallAnchor : MonoBehaviour
         AnchorBall();
     }
 
+    public void RestartBall()
+    {
+        AnchorBall();
+        ReleaseBall();
+    }
+
     private void HandlePointerEvent(PointerEvent evt)
     {
         if (evt.Type == PointerEventType.Select)

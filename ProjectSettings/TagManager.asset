@@ -10,6 +10,7 @@ TagManager:
   - ResetWall
   - DoorTrigger
   - Mazebox
+  - Mazeball
   layers:
   - Default
   - TransparentFX

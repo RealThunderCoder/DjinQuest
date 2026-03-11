@@ -69,6 +69,13 @@ public class MazeBoxIceMirror : MonoBehaviour
         GameObject miniInstance = Instantiate(prefabToUse, miniMazeRoot);
         miniInstance.name = $"{iceBlock.name}_Mini";
 
+        // add tag
+        miniInstance.tag = prefabToUse.tag;
+        foreach (Transform child in miniInstance.transform)
+        {
+            child.gameObject.tag = prefabToUse.tag;
+        }
+
         StripBehaviours(miniInstance);
         SetRigidbodiesKinematic(miniInstance);
 
