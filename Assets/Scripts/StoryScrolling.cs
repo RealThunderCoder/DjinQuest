@@ -16,7 +16,7 @@ public class StoryScrolling : MonoBehaviour
     void Start()
     {
         panels = new GameObject[] { Panel1, Panel2, Panel3, Panel4, Panel5 };
-
+        /*
         DelayedAction(startDelay);
         swapPanel(panels[1], panels[0]);
         DelayedAction(startDelay); 
@@ -25,6 +25,8 @@ public class StoryScrolling : MonoBehaviour
         swapPanel(panels[3], panels[2]);
         DelayedAction(startDelay);
         swapPanel(panels[4], panels[3]);
+        */
+        Sequence();
     }
 
     // Update is called once per frame
@@ -47,6 +49,18 @@ public class StoryScrolling : MonoBehaviour
 
         // Code here will execute after the delay
         Debug.Log("Action finished at: " + Time.time);
+    }
+
+    public void Sequence()
+    {
+        StartCoroutine(DelayedAction(startDelay));
+        swapPanel(panels[1], panels[0]);
+        StartCoroutine(DelayedAction(startDelay)); 
+        swapPanel(panels[2], panels[1]);
+        StartCoroutine(DelayedAction(startDelay));
+        swapPanel(panels[3], panels[2]);
+        StartCoroutine(DelayedAction(startDelay));
+        swapPanel(panels[4], panels[3]);
     }
     /*
     public void FadeInPanel(GameObject panel, float duration)

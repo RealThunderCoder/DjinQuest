@@ -1818,20 +1818,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   slides:
   - panel: {fileID: 2127149447}
-    caption: First Caption
-    narration: {fileID: 8300000, guid: 84d4a507f619bae42987fc781bc55c55, type: 3}
+    caption: Once upon a time, a boy was coming back to his hometown after an arduous
+      journey through the desert. He had visited the wise man in their neighboring
+      town, whom he had sought to consult for his wisdom. However, he found himself
+      stuck in a terrible sandstorm that blinded him to every sense.
+    narration: {fileID: 8300000, guid: 65cc465f8f091d8498e1ec7aef7741ca, type: 3}
   - panel: {fileID: 339543500}
-    caption: Second Caption
-    narration: {fileID: 8300000, guid: ba5f78c7e904ef44794c75ebbbc087be, type: 3}
+    caption: 'The boy arrived at his village, but it was empty and silent, with nothing
+      but the sound of the wind. As a wave of uncertainty rushed over him, the boy
+      rushed to his house only to find out, to his horror, that his family had been
+      turned into stone. The boy cried, feeling lost as to what to do, and tried
+      to reach out for help in the village. '
+    narration: {fileID: 8300000, guid: 866da59858d51d640861b006ac7ee00b, type: 3}
   - panel: {fileID: 891623903}
-    caption: Third Caption
-    narration: {fileID: 8300000, guid: 2648dc3e9bdb33842a656d974dc104c2, type: 3}
+    caption: The boy looked throughout the whole village, just to see everyone frozen,
+      petrified in stone. As the boy felt helpless, he saw the temple in the center
+      of the village glowing a strange shade of green. Hoping to find answers, he
+      ventures into the temple.
+    narration: {fileID: 8300000, guid: 10a9a3ace62ebbd4dbbf3e01c6e2a05f, type: 3}
   - panel: {fileID: 1108681213}
-    caption: Fourth Caption
-    narration: {fileID: 8300000, guid: e3a0589f7ab2a3c41839bd9e9da82dc5, type: 3}
+    caption: As he enters the temple, the boy finds a lamp. He rubs the lamp and
+      a genie pops out. The boy desperately tells the genie about what happened to
+      the village. The genie responds, telling him a curse was placed on his village
+      by the natural forces present within their world. The only way to get rid of
+      the curse is to destroy the source of this curse inside the temple.
+    narration: {fileID: 8300000, guid: ba39b228c9eee24468233f0903b26e6f, type: 3}
   - panel: {fileID: 2068317718}
-    caption: Fifth Caption
-    narration: {fileID: 8300000, guid: a02d85590a7859d49abea56317660988, type: 3}
+    caption: "The genie explains that to get through the trials he will face ahead,
+      he\u2019ll need to solve puzzles using a mystical mazebox with the help of
+      his innate fire and ice powers. Only when these latent powers are realized
+      and the trials completed will he be able to lift the curse."
+    narration: {fileID: 8300000, guid: 1b7ab58cd7921e640b8c34f7277dd6e2, type: 3}
   captionText: {fileID: 1838410004}
   audioSource: {fileID: 1700530547}
   fadeDuration: 0.5
@@ -2155,8 +2172,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 5
+  m_fontSizeBase: 5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
