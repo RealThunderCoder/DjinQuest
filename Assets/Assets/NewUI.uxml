@@ -1,0 +1,9 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="flex-grow: 1; background-color: rgba(56, 56, 56, 0.38);">
+        <ui:Label text="DJINN QUEST" style="font-size: 40px; -unity-text-align: upper-center; -unity-font-style: bold; translate: 0 58px;" />
+        <ui:VisualElement style="flex-grow: 0; align-items: center; justify-content: center; height: 327px; width: 574px; align-self: center; align-content: center; translate: 0 103px;">
+            <ui:Button text="Button" style="width: 319px; height: 69px; translate: 0 -35px;" />
+            <ui:Button text="Button" style="height: 69px; width: 319px; translate: 0 22px;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
