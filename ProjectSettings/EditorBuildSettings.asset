@@ -23,9 +23,21 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Trythings.unity
     guid: d8881bf0a481e6d4dba62ee4755f3fb0
+  - enabled: 0
+    path: Assets/Scenes/MainMenu.unity
+    guid: 85e50b4ccaa7a12438fba40febbbcae1
+  - enabled: 0
+    path: Assets/Scenes/MenuV2.unity
+    guid: 2bbde1569e1e7724da1da0be172a6aa5
+  - enabled: 1
+    path: Assets/Scenes/MenuV3.unity
+    guid: fbf5ebc51689af647bbb67e3b5f52fb4
   - enabled: 1
     path: Assets/Scenes/IntroTesting.unity
     guid: fed18be6bcaa5084a8a24afa832908df
+  - enabled: 1
+    path: Assets/Scenes/MazeStorage Test.unity
+    guid: 5bdb7373b019c964180c7a94aa1f9feb
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 94033dbc921ae5c4893b662644008ca9, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 94ff5c22df974c447bbea7fdf12ae401, type: 3}
