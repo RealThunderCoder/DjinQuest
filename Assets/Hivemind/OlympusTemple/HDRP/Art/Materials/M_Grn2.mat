@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Green_tiles_UV
+  m_Name: M_Grn2
   m_Shader: {fileID: -6465566751694194690, guid: d4b5370133a3d0845852e5d13d41987a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -136,10 +136,10 @@ Material:
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _ColorB: {r: 0.0489498, g: 0.18867922, b: 0.10632629, a: 0}
+    - _ColorB: {r: 0.10238909, g: 0.19496846, b: 0.1579367, a: 0}
     - _ColorBlack: {r: 0, g: 0, b: 0, a: 0}
     - _ColorEmissive: {r: 0, g: 0, b: 0, a: 0}
-    - _ColorG: {r: 0.04085083, g: 0.16981131, b: 0.07667317, a: 0}
+    - _ColorG: {r: 0.040850803, g: 0.15686275, b: 0.07667314, a: 0}
     - _ColorGrunge: {r: 1, g: 1, b: 1, a: 0}
     - _ColorR: {r: 0.49056602, g: 0.25367123, b: 0.21982911, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
@@ -164,7 +164,7 @@ MonoBehaviour:
   hdPluginSubTargetMaterialVersions:
     m_Keys: []
     m_Values: 
---- !u!114 &7445708403150204221
+--- !u!114 &8314671703252837028
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
