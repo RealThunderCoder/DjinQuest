@@ -58,6 +58,8 @@ public class BackHolster : MonoBehaviour
             {
                 _isHolstered = false;
                 transform.SetParent(null);
+                if (rb != null)
+                    rb.interpolation = RigidbodyInterpolation.Interpolate;
             }
         }
         else if (evt.Type == PointerEventType.Unselect)
@@ -76,6 +78,7 @@ public class BackHolster : MonoBehaviour
             rb.useGravity = false;
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
+            rb.interpolation = RigidbodyInterpolation.None;
         }
 
         transform.SetParent(backAnchor);
