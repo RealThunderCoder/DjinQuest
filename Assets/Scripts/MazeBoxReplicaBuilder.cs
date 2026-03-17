@@ -79,7 +79,10 @@ public class MazeBoxReplicaBuilder : MonoBehaviour
         List<MonoBehaviour> behaviours = new List<MonoBehaviour>(root.GetComponentsInChildren<MonoBehaviour>(true));
         foreach (MonoBehaviour behaviour in behaviours)
         {
-              if (behaviour != this && behaviour.GetType() != typeof(MiniMazeBallAnchor)) // Safety check
+              if (behaviour != this &&
+                    behaviour.GetType() != typeof(MiniMazeBallAnchor) &&
+                    behaviour.GetType() != typeof(VacuumEffectSync) &&
+                    behaviour.GetType() != typeof(WinTrigger))
                 Destroy(behaviour);
         }
     }

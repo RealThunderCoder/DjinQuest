@@ -8,6 +8,8 @@ public class MiniMazeBallAnchor : MonoBehaviour
     [SerializeField] private Grabbable mazeBoxGrabbable;
     [SerializeField] private Transform ballBegin;
     private Rigidbody rb;
+    private int _grabCount = 0;
+    private bool _bothHandsTouched = false;
 
     private void Awake()
     {
@@ -62,11 +64,23 @@ public class MiniMazeBallAnchor : MonoBehaviour
     {
         if (evt.Type == PointerEventType.Select)
         {
-            ReleaseBall();
+            _grabCount++;
+            // Ball only starts rolling once both hands have touched the maze box
+            if (_grabCount >= 2 && !_bothHandsTouched)
+            {
+                _bothHandsTouched = true;
+                ReleaseBall();
+            }
         }
         else if (evt.Type == PointerEventType.Unselect)
         {
-            AnchorBall();
+            _grabCount = Mathf.Max(0, _grabCount - 1);
+            // Only reset when both hands fully let go
+            if (_grabCount == 0)
+            {
+                _bothHandsTouched = false;
+                AnchorBall();
+            }
         }
     }
 

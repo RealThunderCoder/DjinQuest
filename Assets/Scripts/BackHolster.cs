@@ -1,70 +1,86 @@
 using UnityEngine;
+using Oculus.Interaction;
 
 public class BackHolster : MonoBehaviour
 {
-    [Header("Back Anchor")]
+    [Header("References")]
     [SerializeField] private Transform backAnchor;
+    [SerializeField] private Grabbable mazeBoxGrabbable;
+
+    [Header("Holster Settings")]
     [SerializeField] private Vector3 localPositionOffset = new Vector3(0f, 1f, -0.15f);
     [SerializeField] private Vector3 localRotationOffset = new Vector3(-90f, 0f, 0f);
-
-    [Header("Settings")]
     [SerializeField] private bool holsterOnStart = true;
-    [SerializeField] private bool disablePhysicsWhenHolstered = true;
 
     private Rigidbody rb;
-    private bool wasKinematicLastFrame;
+    private bool _isHolstered = false;
+    private int _grabCount = 0;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
+    private void OnEnable()
+    {
+        if (mazeBoxGrabbable != null)
+            mazeBoxGrabbable.WhenPointerEventRaised += HandlePointerEvent;
+    }
+
+    private void OnDisable()
+    {
+        if (mazeBoxGrabbable != null)
+            mazeBoxGrabbable.WhenPointerEventRaised -= HandlePointerEvent;
+    }
+
     private void Start()
     {
         if (holsterOnStart)
-        {
             AttachToBack();
-        }
     }
 
-    private void Update()
+    // Snap position every frame so it never lags behind the player's back
+    private void LateUpdate()
     {
-        if (backAnchor == null || rb == null)
-            return;
+        if (!_isHolstered || backAnchor == null) return;
+        transform.SetPositionAndRotation(
+            backAnchor.TransformPoint(localPositionOffset),
+            backAnchor.rotation * Quaternion.Euler(localRotationOffset)
+        );
+    }
 
-        // If object is grabbed, Oculus sets Rigidbody.isKinematic = true
-        bool isGrabbed = rb.isKinematic;
-
-        // If just released
-        if (!isGrabbed && wasKinematicLastFrame)
+    private void HandlePointerEvent(PointerEvent evt)
+    {
+        if (evt.Type == PointerEventType.Select)
         {
-            AttachToBack();
+            _grabCount++;
+            if (_grabCount == 1)
+            {
+                _isHolstered = false;
+                transform.SetParent(null);
+            }
         }
-
-        wasKinematicLastFrame = isGrabbed;
+        else if (evt.Type == PointerEventType.Unselect)
+        {
+            _grabCount = Mathf.Max(0, _grabCount - 1);
+            if (_grabCount == 0)
+                AttachToBack();
+        }
     }
 
     private void AttachToBack()
     {
-        transform.SetParent(backAnchor);
-        transform.localPosition = localPositionOffset;
-        transform.localRotation = Quaternion.Euler(localRotationOffset);
-
-        if (disablePhysicsWhenHolstered && rb != null)
-        {
-            rb.isKinematic = true;
-            rb.useGravity = false;
-        }
-    }
-
-    public void OnGrabbed()
-    {
-        transform.SetParent(null);
-
         if (rb != null)
         {
             rb.isKinematic = true;
             rb.useGravity = false;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
         }
+
+        transform.SetParent(backAnchor);
+        transform.localPosition = localPositionOffset;
+        transform.localRotation = Quaternion.Euler(localRotationOffset);
+        _isHolstered = true;
     }
 }

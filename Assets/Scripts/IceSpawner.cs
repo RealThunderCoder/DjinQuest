@@ -19,6 +19,13 @@ public class IceSpawner : MonoBehaviour
     [SerializeField] private int _spawnLimit = 1;
     private int _spawnCount;
 
+    [Header("Level Bounds")]
+    [SerializeField] private Collider _levelBoundsCollider;
+
+    [Header("Spawn Cooldown")]
+    [SerializeField] private float _spawnCooldownDuration = 1f;
+    private float _spawnCooldown = 0f;
+
     [Header("Preview References")]
     [SerializeField] private Material _previewMaterial;
     private Material _previewMatInstance;
@@ -45,6 +52,9 @@ public class IceSpawner : MonoBehaviour
 
     private void Update()
     {
+        if (_spawnCooldown > 0f)
+            _spawnCooldown -= Time.deltaTime;
+
         PreviewCheck();
         RotationCheck();
         PlacingCheck();
@@ -65,9 +75,10 @@ public class IceSpawner : MonoBehaviour
 
     private void PlacingCheck()
     {
-        if (!CanPlace() || _input.fingerVelocity.y < _input.spawnVelocityThreshold) return;
+        if (!CanPlace() || _spawnCooldown > 0f || _input.fingerVelocity.y < _input.spawnVelocityThreshold) return;
         SpawnIce(_currentType);
         AddSpawnCount(1);
+        _spawnCooldown = _spawnCooldownDuration;
     }
 
     private void RotationCheck()
@@ -81,6 +92,13 @@ public class IceSpawner : MonoBehaviour
         GameObject iceInstance = Instantiate(type.Prefab, _spawnLocation, Quaternion.Euler(0, _rotationIndex * 90f, 0));
         _mainGridData.AddObject(_spawnLocation, _currentType);
         iceInstance.GetComponent<Animator>().SetTrigger("SummonIce");
+
+        // Ice is a wall — keep it static so it doesn't fall and hit the ball
+        if (iceInstance.TryGetComponent<Rigidbody>(out var iceRb))
+        {
+            iceRb.isKinematic = true;
+            iceRb.useGravity = false;
+        }
         IceBlock iceBlock = iceInstance.GetComponent<IceBlock>();
         if (iceBlock != null)
         {
@@ -121,12 +139,20 @@ public class IceSpawner : MonoBehaviour
         }
     }
 
+    private bool IsWithinBounds()
+    {
+        if (_levelBoundsCollider == null) return true;
+        Bounds b = _levelBoundsCollider.bounds;
+        return _spawnLocation.x >= b.min.x && _spawnLocation.x <= b.max.x &&
+               _spawnLocation.z >= b.min.z && _spawnLocation.z <= b.max.z;
+    }
+
     private void UpdatePreviewColor()
     {
         if (_previewGO == null) return;
-        Debug.Log($"Limit OK: {SpawnLimitCheck()}, Space OK: {_mainGridData.CanPlaceAt(_spawnLocation, _currentType.Size)}");
         _previewMatInstance.color = (SpawnLimitCheck() &&
-            _mainGridData.CanPlaceAt(_spawnLocation, _currentType.Size))
+            _mainGridData.CanPlaceAt(_spawnLocation, _currentType.Size) &&
+            IsWithinBounds())
             ? Color.green : Color.red;
 
         foreach (Renderer render in _previewGO.GetComponentsInChildren<Renderer>())
@@ -185,7 +211,8 @@ public class IceSpawner : MonoBehaviour
     private bool CanPlace()
     {
         return (_isPlacing && SpawnLimitCheck() && _isPreviewing &&
-            _mainGridData.CanPlaceAt(_spawnLocation, _currentType.Size));
+            _mainGridData.CanPlaceAt(_spawnLocation, _currentType.Size) &&
+            IsWithinBounds());
     }
 
     private bool SpawnLimitCheck()
